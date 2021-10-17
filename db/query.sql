@@ -1,13 +1,12 @@
 /* Connect Role to Department*/
-SELECT  AS 
-FROM 
-LEFT JOIN 
-ON 
-ORDER BY 
+SELECT *
+FROM role
+JOIN department
+ON role.department_id = department.id
+
 
 /*Connect Employee to Role*/
-SELECT  AS 
-FROM 
-LEFT JOIN 
-ON 
-ORDER BY 
+SELECT *
+FROM employee
+JOIN role
+ON employee.role_id = role.id
