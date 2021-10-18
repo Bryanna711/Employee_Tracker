@@ -4,13 +4,13 @@ VALUES(001, "Human Resources"),
       (003, "Customer Service"),
       (004, "Sales");
 
-INSERT INTO role (id, title, salary department_id)
-VALUES (001, "HR Specialist", 75,000, 001),
-       (002, "Sr Web Developer", 95,000, 002),
-       (003, "Jr Web Developer", 65,000, 002),
-       (004, "Customer Service Rep", 45,000, 003),
-       (005, "Sales Representative", 75,000, 004),
-       (006, "HR Generalist", 65,000, 001);
+INSERT INTO role (id, title, salary, department_id)
+VALUES (001, "HR Specialist", 75000, 001),
+       (002, "Sr Web Developer", 95000, 002),
+       (003, "Jr Web Developer", 65000, 002),
+       (004, "Customer Service Rep", 45000, 003),
+       (005, "Sales Representative", 75000, 004),
+       (006, "HR Generalist", 65000, 001);
 
 INSERT INTO employee (id, first_name, last_name, role_id, manager_id)
 VALUES (001,"Sarah", "Golden",006, 001),
