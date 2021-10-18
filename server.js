@@ -1,8 +1,9 @@
-const fs = require('fs');
-const express = require("express");
+// const fs = require('fs');
+// const express = require("express");
 const mysql = require('mysql2');
 const inquirer = require("inquirer");
-const { resourceLimits } = require('worker_threads');
+const cTable = require('console.table');
+
 
 const PORT = process.env.PORT || 3001;
 
@@ -35,78 +36,86 @@ const toDo = () => {
     })
         .then((answer) => {
             if ("View all Departments") {
-                viewDept()
+                viewDept(answer)
 
             }
             if ("View all Roles") {
-                viewRole()
+                viewRole(answer)
 
             }
             if ("View all Employees") {
-                viewEmployee()
+                viewEmployee(answer)
 
             }
             if ("Add a Department") {
-                addDept()
+                addDept(answer)
             }
             if ("Add a Role") {
                 addRole()
             }
             if ("Add an Employee") {
-                addEmployee()
+                addEmployee(answer)
             }
             if ("Update an Employee") {
-                updateEmployee()
+                updateEmployee(answer)
             }
 
         })
 };
 
-const viewDept = () =>{
-app.get('/api/tracker/department',(req, res) =>{
-    const sql = `SELECT id, department_name AS title FROM tracker`;
 
-    db.query(sql, (err, rows)=>{
-        err ? res.status(500).json({err: err.message}) :
-        res.json({
-            message:'Success',
-            data: rows
-        });    
+const viewDept = () =>{
+// app.get('/api/department',(req, res) =>{
+    const sql = `SELECT * FROM department`;
+
+    db.query(sql, (err, res)=>{
+     err ? console.log(err) : cTable(res)
+        // err ? res.status(500).json({err: err.message}) :
+        // res.json({
+        //     message:'Success',
+        //     data: rows
+        // });    
     });
-});
-}
+};
+// );
+// };
 
 const viewRole = () =>{
-    app.get('/api/tracker/role',(req, res) =>{
-        const sql = `SELECT id, title AS title FROM tracker`;
+    // app.get('/api/role',(req, res) =>{
+        const sql = `SELECT * FROM role`;
     
-        db.query(sql, (err, rows)=>{
-            err ? res.status(500).json({err: err.message}) :
-            res.json({
-                message:'Success',
-                data: rows
-            });    
+        db.query(sql, (err, res)=>{
+
+            err ? console.log(err) : cTable(res)
+        //     err ? res.status(500).json({err: err.message}) :
+        //     res.json({
+        //         message:'Success',
+        //         data: rows
+        //     });    
         });
-    }); 
-}
+    }
+//     ); 
+// };
 
 const viewEmployee = () =>{
-    app.get('/api/tracker/employee',(req, res) =>{
-        const sql = `SELECT first_name AS title FROM tracker`;
+    // app.get('/api/employee',(req, res) =>{
+        const sql = `SELECT * FROM employee`;
     
-        db.query(sql, (err, rows)=>{
-            err ? res.status(500).json({err: err.message}) :
-            res.json({
-                message:'Success',
-                data: rows
-            });    
+        db.query(sql, (err, res)=>{
+            err ? console.log(err) : cTable(res)
+            // err ? res.status(500).json({err: err.message}) :
+            // res.json({
+            //     message:'Success',
+            //     data: rows
+            // });    
         });
-    }); 
-}
+    }
+//     ); 
+// };
 
 const addDept = () =>{
-    app.post('/api/tracker/department', (req,res) => {
-        const sql = `INSERT INTO tracker (department_name)
+    app.post('/api/department', (req,res) => {
+        const sql = `INSERT INTO department (department_name)
         VALUES (?)`;
         const params = [body.department_name];
 
@@ -118,11 +127,11 @@ const addDept = () =>{
             });    
         });
     })
-}
+};
 
 const addRole = () =>{
-    app.post('/api/tracker/role', (req,res) => {
-        const sql = `INSERT INTO tracker (title, salary, department_id)
+    app.post('/api/role', (req,res) => {
+        const sql = `INSERT INTO role (title, salary, department_id)
         VALUES (?)`;
         const params = [body.title, body.salary, body.department_id];
        
@@ -134,11 +143,11 @@ const addRole = () =>{
             });    
         });
     })
-}
+};
 
 const addEmployee = () =>{
-    app.post('/api/tracker/employee', (req,res) => {
-        const sql = `INSERT INTO tracker (first_name, last_name, role_id, manager_id)
+    app.post('/api/employee', (req,res) => {
+        const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id)
         VALUES (?)`;
         const params = [body.first_name, body.last_name, body.role_id, body.manager_id];
       
@@ -150,10 +159,10 @@ const addEmployee = () =>{
             });    
         });
     })
-}
+};
 
 const updateEmployee = () =>{
-    app.put('/api/tracker/employee/:employee_id', (req, res) => {
+    app.put('/api/employee/:employee_id', (req, res) => {
         const sql = `UPDATE employee SET employee = ? WHERE id = ?`;
         const params = [req.body.employee, req.params.id];
        
@@ -177,4 +186,6 @@ const updateEmployee = () =>{
 //Functions for each choice
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
-})
+});
+toDo();
+
