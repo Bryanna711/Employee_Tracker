@@ -7,7 +7,7 @@ const cTable = require('console.table');
 
 const PORT = process.env.PORT || 3001;
 
-const app = express();
+// const app = express();
 
 const db = mysql.createConnection(
     {
@@ -66,10 +66,10 @@ const toDo = () => {
 
 const viewDept = () =>{
 // app.get('/api/department',(req, res) =>{
-    const sql = `SELECT * FROM department`;
+    const sql = `SELECT id, department_name AS department FROM department`;
 
     db.query(sql, (err, res)=>{
-     err ? console.log(err) : cTable(res)
+     err ? console.log(err) : console.table(res)
         // err ? res.status(500).json({err: err.message}) :
         // res.json({
         //     message:'Success',
@@ -86,7 +86,7 @@ const viewRole = () =>{
     
         db.query(sql, (err, res)=>{
 
-            err ? console.log(err) : cTable(res)
+            err ? console.log(err) : console.table(res)
         //     err ? res.status(500).json({err: err.message}) :
         //     res.json({
         //         message:'Success',
@@ -102,7 +102,7 @@ const viewEmployee = () =>{
         const sql = `SELECT * FROM employee`;
     
         db.query(sql, (err, res)=>{
-            err ? console.log(err) : cTable(res)
+            err ? console.log(err) : console.table(res)
             // err ? res.status(500).json({err: err.message}) :
             // res.json({
             //     message:'Success',
@@ -114,20 +114,18 @@ const viewEmployee = () =>{
 // };
 
 const addDept = () =>{
-    app.post('/api/department', (req,res) => {
-        const sql = `INSERT INTO department (department_name)
-        VALUES (?)`;
-        const params = [body.department_name];
-
-        db.query(sql, params, (err, result)=>{
-            err ? res.status(400).json({err: err.message}) :
-            res.json({
-                message:'Success',
-                data: rows
-            });    
-        });
+    inquirer.prompt({
+        type:"input",
+        name: "department_name",
+        message: "What is the department name?"
     })
-};
+    .then((answer)=> {const sql = `INSERT INTO department (department_name), VALUES, (${answer.name})`
+
+    db.query(sql,(err, res)=>{
+        err ? console.log(err) : console.table(res)})
+        });
+    };
+
 
 const addRole = () =>{
     app.post('/api/role', (req,res) => {
@@ -184,8 +182,8 @@ const updateEmployee = () =>{
 //Put - Update Employee
 
 //Functions for each choice
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`)
-});
+// app.listen(PORT, () => {
+//     console.log(`Server running on port ${PORT}`)
+// });
 toDo();
 
