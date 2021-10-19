@@ -1,13 +1,6 @@
-// const fs = require('fs');
-// const express = require("express");
 const mysql = require('mysql2');
 const inquirer = require("inquirer");
 const cTable = require('console.table');
-
-
-const PORT = process.env.PORT || 3001;
-
-// const app = express();
 
 const db = mysql.createConnection(
     {
@@ -35,155 +28,184 @@ const toDo = () => {
         ]
     })
         .then((answer) => {
-            if ("View all Departments") {
-                viewDept(answer)
+            switch (answer.actions) {
+                case "View all Departments":
+                    viewDept();
+                    break;
+
+                case "View all Roles":
+                    viewRole();
+                    break;
+
+                case "View all Employees":
+                    viewEmployee();
+                    break;
+
+                case "Add a Department":
+                    addDept();
+                    break;
+
+                case "Add a Role":
+                    addRole();
+                    break;
+
+                case "Add an Employee":
+                    addEmployee();
+                    break;
+
+                case "Update an Employee":
+                    updateEmployee();
+                    break;
 
             }
-            if ("View all Roles") {
-                viewRole(answer)
-
-            }
-            if ("View all Employees") {
-                viewEmployee(answer)
-
-            }
-            if ("Add a Department") {
-                addDept(answer)
-            }
-            if ("Add a Role") {
-                addRole()
-            }
-            if ("Add an Employee") {
-                addEmployee(answer)
-            }
-            if ("Update an Employee") {
-                updateEmployee(answer)
-            }
-
         })
 };
 
 
-const viewDept = () =>{
-// app.get('/api/department',(req, res) =>{
-    const sql = `SELECT id, department_name AS department FROM department`;
+const viewDept = () => {
+    const sql = `SELECT * FROM department`;
+    db.query(sql, (err, res) => {
+        err ? console.log(err) : console.table(res);
+    });
+    toDo();
+};
 
-    db.query(sql, (err, res)=>{
-     err ? console.log(err) : console.table(res)
-        // err ? res.status(500).json({err: err.message}) :
-        // res.json({
-        //     message:'Success',
-        //     data: rows
-        // });    
+
+const viewRole = () => {
+    const sql = `SELECT * FROM role`;
+
+    db.query(sql, (err, res) => {
+        err ? console.log(err) : console.table(res);
+        toDo();
     });
 };
-// );
-// };
 
-const viewRole = () =>{
-    // app.get('/api/role',(req, res) =>{
-        const sql = `SELECT * FROM role`;
-    
-        db.query(sql, (err, res)=>{
 
-            err ? console.log(err) : console.table(res)
-        //     err ? res.status(500).json({err: err.message}) :
-        //     res.json({
-        //         message:'Success',
-        //         data: rows
-        //     });    
-        });
-    }
-//     ); 
-// };
+const viewEmployee = () => {
+    const sql = `SELECT * FROM employee`;
 
-const viewEmployee = () =>{
-    // app.get('/api/employee',(req, res) =>{
-        const sql = `SELECT * FROM employee`;
-    
-        db.query(sql, (err, res)=>{
-            err ? console.log(err) : console.table(res)
-            // err ? res.status(500).json({err: err.message}) :
-            // res.json({
-            //     message:'Success',
-            //     data: rows
-            // });    
-        });
-    }
-//     ); 
-// };
+    db.query(sql, (err, res) => {
+        err ? console.log(err) : console.table(res);
+        toDo();
+    });
+};
 
-const addDept = () =>{
+const addDept = () => {
     inquirer.prompt({
-        type:"input",
+        type: "input",
         name: "department_name",
         message: "What is the department name?"
     })
-    .then((answer)=> {const sql = `INSERT INTO department (department_name), VALUES, (${answer.name})`
+        .then((answer) => {
+            const sql = `INSERT INTO department (department_name) VALUES ("${answer.department_name}")`
 
-    db.query(sql,(err, res)=>{
-        err ? console.log(err) : console.table(res)})
+            db.query(sql, (err, res) => {
+                err ? console.log(err) : console.table(res);
+                toDo();
+            })
         });
-    };
-
-
-const addRole = () =>{
-    app.post('/api/role', (req,res) => {
-        const sql = `INSERT INTO role (title, salary, department_id)
-        VALUES (?)`;
-        const params = [body.title, body.salary, body.department_id];
-       
-        db.query(sql, params, (err, result)=>{
-            err ? res.status(400).json({err: err.message}) :
-            res.json({
-                message:'Success',
-                data: rows
-            });    
-        });
-    })
 };
 
-const addEmployee = () =>{
-    app.post('/api/employee', (req,res) => {
-        const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id)
-        VALUES (?)`;
-        const params = [body.first_name, body.last_name, body.role_id, body.manager_id];
-      
-        db.query(sql, params, (err, result)=>{
-            err ? res.status(400).json({err: err.message}) :
-            res.json({
-                message:'Success',
-                data: rows
-            });    
+
+const addRole = () => {
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "title",
+            message: "What is the role title?"
+        },
+        {
+            type: "input",
+            name: "salary",
+            message: "What is the role salary"
+        },
+        {
+            type: "input",
+            name: "department_id",
+            message: "What is the department id?"
+        }
+    ])
+        .then((answer) => {
+            const sql = `INSERT INTO role (title, salary, department_id) VALUES ["${answer.title}", "${answer.salary}", "${answer.department_id}"]`
+
+            db.query(sql, (err, res) => {
+                err ? console.log(err) : console.table(res);
+                toDo();
+            })
         });
-    })
 };
 
-const updateEmployee = () =>{
-    app.put('/api/employee/:employee_id', (req, res) => {
-        const sql = `UPDATE employee SET employee = ? WHERE id = ?`;
-        const params = [req.body.employee, req.params.id];
-       
-        db.query(sql, params, (err, result)=>{
-            err ? res.status(400).json({err: err.message}) :
-            res.json({
-                message:'Success',
-                data: req.body,
-                changes : result.affectedRows
-            });    
-        });
 
-    })
+const addEmployee = () => {
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "first_name",
+            message: "What is the employee's first name?"
+        },
+        {
+            type: "input",
+            name: "last_name",
+            message: "What is the employee's last name?"
+        },
+        {
+            type: "input",
+            name: "role_id",
+            message: "What is the employee's role id?"
+        },
+        {
+            type: "input",
+            name: "manager_id",
+            message: "What is the employee's manager's id?"
+        },
+    ])
+        .then((answer) => {
+            const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${answer.first_name}", "${answer.last_name}", "${answer.role_id}", "${answer.manager_id}")`
+            db.query(sql, (err, res) => {
+                err ? console.log(err) : console.table(res);
+                toDo();
+            })
+        });
 };
 
-//API ROUTES
-//Get - View ALL
-//Post - Add ALL
-//Put - Update Employee
+const updateEmployee = () => {
 
-//Functions for each choice
-// app.listen(PORT, () => {
-//     console.log(`Server running on port ${PORT}`)
-// });
+    inquirer.prompt(
+        [
+    {
+        type: "input",
+        name: "empID",
+        message: "What is the employee's id that you'd like to update?"
+    },
+    {
+        type: "input",
+        name: "first_name",
+        message: "What is the employee's first name?"
+    },
+    {
+        type: "input",
+        name: "last_name",
+        message: "What is the employee's last name?"
+    },
+    {
+        type: "input",
+        name: "role_id",
+        message: "What is the employee's role id?"
+    },
+    {
+        type: "input",
+        name: "manager_id",
+        message: "What is the employee's manager's id?"
+    },
+])
+.then((answer) =>{
+    const sql = `UPDATE employee SET first_name = ("${answer.first_name}"), last_name = ("${answer.last_name}"), role_id = ("${answer.role_id}"), manager_id = ("${answer.manager_id}")  WHERE id = ("${answer.empID}")`;
+    db.query(sql, (err, res) => {
+        err ? console.log(err) : console.table(res);
+        toDo();
+    });
+});
+};
+
 toDo();
 

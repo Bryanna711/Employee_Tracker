@@ -13,13 +13,13 @@ VALUES (011, "HR Specialist", 75000, 001),
        (066, "HR Generalist", 65000, 001);
 
 INSERT INTO employee (id, first_name, last_name, role_id, manager_id)
-VALUES (111,"Sarah", "Golden",066, 001),
-       (222,"Christine", "Relf",055,006),
+VALUES (111,"Sarah", "Golden",066, 111),
+       (222,"Christine", "Relf",055,666),
        (333,"Bev", "Hanson",011, null),
-       (444,"Kate", "Landes",044,006),
+       (444,"Kate", "Landes",044,666),
        (555,"Russ", "Landes",022, null),
        (666,"David", "Vinge",055, null),
-       (777,"Sue", "Dorweiler",055, 006),
-       (888,"Matt", "Goings",044, 006),
-       (999,"Paran", "Kashani",033,005),
-       (1000, "Dillon", "Baxendell",033,005);
+       (777,"Sue", "Dorweiler",055, 666),
+       (888,"Matt", "Goings",044, 666),   
+       (999,"Paran", "Kashani",033,555),
+       (1000, "Dillon", "Baxendell",033,555);
