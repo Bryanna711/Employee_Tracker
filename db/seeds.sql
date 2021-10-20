@@ -1,25 +1,25 @@
-INSERT INTO department(id, department_name)
-VALUES(001, "Human Resources"),
-      (002, "Engineering"),
-      (003, "Customer Service"),
-      (004, "Sales");
+INSERT INTO department(department_name)
+VALUES( "Human Resources"),
+      ( "Engineering"),
+      ( "Customer Service"),
+      ( "Sales");
 
-INSERT INTO role (id, title, salary, department_id)
-VALUES (011, "HR Specialist", 75000, 001),
-       (022, "Sr Web Developer", 95000, 002),
-       (033, "Jr Web Developer", 65000, 002),
-       (044, "Customer Service Rep", 45000, 003),
-       (055, "Sales Representative", 75000, 004),
-       (066, "HR Generalist", 65000, 001);
+INSERT INTO role (title, salary, department)
+VALUES ( "HR Specialist", 75000,1),
+       ( "HR Generalist", 65000,1),
+       ( "Sr Web Developer", 95000, 2),
+       ( "Jr Web Developer", 65000,2),
+       ( "Customer Service Rep", 45000, 3),
+       ( "Sales Representative", 75000, 4);
 
-INSERT INTO employee (id, first_name, last_name, role_id, manager_id)
-VALUES (111,"Sarah", "Golden",066, 111),
-       (222,"Christine", "Relf",055,666),
-       (333,"Bev", "Hanson",011, null),
-       (444,"Kate", "Landes",044,666),
-       (555,"Russ", "Landes",022, null),
-       (666,"David", "Vinge",055, null),
-       (777,"Sue", "Dorweiler",055, 666),
-       (888,"Matt", "Goings",044, 666),   
-       (999,"Paran", "Kashani",033,555),
-       (1000, "Dillon", "Baxendell",033,555);
+INSERT INTO employee (first_name, last_name, role_id, manager_id)
+VALUES ("Russ", "Landes", 2, null),
+       ("Paran", "Kashani", 3,1),
+       ("Dillon", "Baxendell",3, 1),
+       ("David", "Vinge",5, null),
+       ("Christine", "Relf",5,5),
+       ("Kate", "Landes",4,5),
+       ("Sue", "Dorweiler",5, 5),
+       ("Matt", "Goings",4, 5),   
+       ("Bev", "Hanson",1, null),
+       ("Sarah", "Golden",6, 9);

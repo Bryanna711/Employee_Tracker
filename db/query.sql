@@ -1,12 +1,12 @@
 /* Connect Role to Department*/
 SELECT *
 FROM role
-JOIN department
-ON role.department_id = department.id;
+LEFT JOIN department
+ON role.department = department.id;
 
 
 -- /*Connect Employee to Role*/
 SELECT *
 FROM employee
-JOIN role
-ON employee.role_id = role.id;
+LEFT JOIN role
+ON employee.role_id = role.role_id;

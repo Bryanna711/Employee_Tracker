@@ -25,6 +25,7 @@ const toDo = () => {
             "Add a Role",
             "Add an Employee",
             "Update an Employee",
+            "Delete an Employee",
         ]
     })
         .then((answer) => {
@@ -57,6 +58,10 @@ const toDo = () => {
                     updateEmployee();
                     break;
 
+                case "Delete an Employee":
+                    deleteEmployee();
+                    break;
+
             }
         })
 };
@@ -72,7 +77,10 @@ const viewDept = () => {
 
 
 const viewRole = () => {
-    const sql = `SELECT * FROM role`;
+    const sql = `SELECT *
+    FROM role
+ JOIN department
+    ON role.department = department.id`;
 
     db.query(sql, (err, res) => {
         err ? console.log(err) : console.table(res);
@@ -82,7 +90,10 @@ const viewRole = () => {
 
 
 const viewEmployee = () => {
-    const sql = `SELECT * FROM employee`;
+    const sql = `SELECT *
+    FROM employee
+    JOIN role
+    ON employee.role_id = role.role_id`;
 
     db.query(sql, (err, res) => {
         err ? console.log(err) : console.table(res);
@@ -126,7 +137,7 @@ const addRole = () => {
         }
     ])
         .then((answer) => {
-            const sql = `INSERT INTO role (title, salary, department_id) VALUES ["${answer.title}", "${answer.salary}", "${answer.department_id}"]`
+            const sql = `INSERT INTO role (title, salary, department) VALUES ["${answer.title}", "${answer.salary}", "${answer.department}"]`
 
             db.query(sql, (err, res) => {
                 err ? console.log(err) : console.table(res);
@@ -172,40 +183,59 @@ const updateEmployee = () => {
 
     inquirer.prompt(
         [
-    {
-        type: "input",
-        name: "empID",
-        message: "What is the employee's id that you'd like to update?"
-    },
-    {
-        type: "input",
-        name: "first_name",
-        message: "What is the employee's first name?"
-    },
-    {
-        type: "input",
-        name: "last_name",
-        message: "What is the employee's last name?"
-    },
-    {
-        type: "input",
-        name: "role_id",
-        message: "What is the employee's role id?"
-    },
-    {
-        type: "input",
-        name: "manager_id",
-        message: "What is the employee's manager's id?"
-    },
-])
-.then((answer) =>{
-    const sql = `UPDATE employee SET first_name = ("${answer.first_name}"), last_name = ("${answer.last_name}"), role_id = ("${answer.role_id}"), manager_id = ("${answer.manager_id}")  WHERE id = ("${answer.empID}")`;
-    db.query(sql, (err, res) => {
-        err ? console.log(err) : console.table(res);
-        toDo();
-    });
-});
+            {
+                type: "input",
+                name: "empID",
+                message: "What is the employee's id that you'd like to update?"
+            },
+            {
+                type: "input",
+                name: "first_name",
+                message: "What is the employee's first name?"
+            },
+            {
+                type: "input",
+                name: "last_name",
+                message: "What is the employee's last name?"
+            },
+            {
+                type: "input",
+                name: "role_id",
+                message: "What is the employee's role id?"
+            },
+            {
+                type: "input",
+                name: "manager_id",
+                message: "What is the employee's manager's id?"
+            },
+        ])
+        .then((answer) => {
+            const sql = `UPDATE employee SET first_name = ("${answer.first_name}"), last_name = ("${answer.last_name}"), role_id = ("${answer.role_id}"), manager_id = ("${answer.manager_id}")  WHERE id = ("${answer.empID}")`;
+            db.query(sql, (err, res) => {
+                err ? console.log(err) : console.table(res);
+                toDo();
+            });
+        });
+};
+
+const deleteEmployee = () => {
+
+    inquirer.prompt(
+        [
+            {
+                type: "input",
+                name: "empID",
+                message: "What is the employee's id that you'd like to delete?"
+            },
+
+        ])
+        .then((answer) => {
+            const sql = `DELETE FROM employee WHERE employee_id = ("${answer.empID}")`;
+            db.query(sql, (err, res) => {
+                err ? console.log(err) : console.table(res);
+                toDo();
+            });
+        });
 };
 
 toDo();
-
