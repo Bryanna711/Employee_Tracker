@@ -133,7 +133,7 @@ const viewEmployee = () => {
 };
 
 const viewManager = () => {
-    const sql = `SELECT manager.manager_id AS Manager_ID, manager.man_first_name AS Manager_first_name, manager.man_last_name AS last_name,
+    const sql = `SELECT manager.manager_id AS Manager_ID, manager.man_first_name AS Manager_first_name, manager.man_last_name AS Manager_last_name,
     employee.first_name AS Employee_first_name, employee.last_name AS last_name
     FROM manager
     LEFT JOIN employee
@@ -276,7 +276,7 @@ const updateEmployee = () => {
             },
         ])
         .then((answer) => {
-            const sql = `UPDATE employee SET first_name = ("${answer.first_name}"), last_name = ("${answer.last_name}"), role_id = ("${answer.role_id}"), manager_id = ("${answer.manager_id}")  WHERE id = ("${answer.empID}")`;
+            const sql = `UPDATE employee SET first_name = ("${answer.first_name}"), last_name = ("${answer.last_name}"), role_id = ("${answer.role_id}"), manager_id = ("${answer.manager_id}")  WHERE employee_id = ("${answer.empID}")`;
             db.query(sql, (err, res) => {
                 err ? console.log(err) : console.table(res);
                 toDo();
