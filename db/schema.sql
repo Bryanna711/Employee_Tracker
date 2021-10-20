@@ -18,6 +18,12 @@ CREATE TABLE role (
     ON DELETE SET NULL
 );
 
+CREATE TABLE manager (
+    manager_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    man_first_name VARCHAR(30),
+    man_last_name VARCHAR(30)
+);
+
 CREATE TABLE employee (
     employee_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(30),
@@ -26,5 +32,9 @@ CREATE TABLE employee (
     manager_id INT,
     FOREIGN KEY (role_id)
     REFERENCES role(role_id)
+    ON DELETE SET NULL,
+    FOREIGN KEY (manager_id)
+    REFERENCES manager(manager_id)
     ON DELETE SET NULL
 );
+
